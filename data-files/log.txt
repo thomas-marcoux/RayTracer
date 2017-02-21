@@ -1,13 +1,13 @@
 Application Log
-Start: Mon Feb 20 22:55:54 2017
+Start: Mon Feb 20 23:01:40 2017
 
 WARNING: AudioDevice is not enabled. Set G3DSpecification::audio = true before invoking initGLG3D() to enable audio.
-Initializing System::findDataFile took 0.004569s
+Initializing System::findDataFile took 0.003313s
 
 Entering GApp::GApp()
 cwd = C:\Users\Sorel\Documents\Visual Studio 2015\Projects\RayTracer\data-files
 System::setAppDataDir("C:\Users\Sorel\Documents\Visual Studio 2015\Projects\RayTracer\data-files")
-Initializing System::findDataFile took 0.001836s
+Initializing System::findDataFile took 0.002404s
 Setting video mode
 wglSwapIntervalEXT(1);
 Setting initial rendering state.
@@ -581,11 +581,11 @@ Found scenes:
   "G3D Sports Car (White)" (C:\Users\Sorel\g3d\data10\research/scene/sportsCarWhite.Scene.Any)
   "G3D Transparency Test" (C:\Users\Sorel\g3d\data10\research/scene/transparencyTest.Scene.Any)
   "G3D Triangle" (C:\Users\Sorel\g3d\data10\research/scene/triangle.Scene.Any)
-НээээЭЭЭH‘µ¤
-НээээЭЭЭш‘е¤
+НээээЭЭ
 Нээээ
-Нээээ
-Нээээ
+НээээЭЭЭ?`ЬЩЭ
+НээээЭЭЭ'`ДЩЭ
+НээээЭЭЭ`мЩЭ
 Vertex info
 -----------
 1(42) : warning C7050: "tex0" might be used before being initialized
@@ -598,21 +598,21 @@ Vertex info
 -----------
 1(42) : warning C7050: "tex0" might be used before being initialized
 
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
-Нээээ
+НээээЭЭЭ7`ФЩЭ
+НээээЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЋ‚ Б}
+НээээЭЭЭ?`ЬЩЭ
+НээээЭЭЭ?`ЬЩЭ
+НээээЭЭЭ`иЩЭ
+НээээЭЭЭ?`ЬЩЭ
+НээээЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЭЋ‚ Б}
+НээээЭЭЭ?`ЬЩЭ
+НээээЭЭЭ`ьЩЭ
+НээээЭЭЭ7`ФЩЭ
+НээээЭЭЭ`иЩЭ
+НээээЭЭЭ`мЩЭ
+НээээЭЭЭ`шЩЭ
+НээээЭЭЭ`иЩЭ
+НээээЭЭЭ3`РЩЭ
 _____________________________________________________
 
     ###    Files Used    ###
