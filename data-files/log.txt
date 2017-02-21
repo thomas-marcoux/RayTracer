@@ -1,13 +1,13 @@
 Application Log
-Start: Mon Feb 20 22:49:28 2017
+Start: Mon Feb 20 22:55:54 2017
 
 WARNING: AudioDevice is not enabled. Set G3DSpecification::audio = true before invoking initGLG3D() to enable audio.
-Initializing System::findDataFile took 0.096021s
+Initializing System::findDataFile took 0.004569s
 
 Entering GApp::GApp()
 cwd = C:\Users\Sorel\Documents\Visual Studio 2015\Projects\RayTracer\data-files
 System::setAppDataDir("C:\Users\Sorel\Documents\Visual Studio 2015\Projects\RayTracer\data-files")
-Initializing System::findDataFile took 0.003519s
+Initializing System::findDataFile took 0.001836s
 Setting video mode
 wglSwapIntervalEXT(1);
 Setting initial rendering state.
@@ -581,8 +581,8 @@ Found scenes:
   "G3D Sports Car (White)" (C:\Users\Sorel\g3d\data10\research/scene/sportsCarWhite.Scene.Any)
   "G3D Transparency Test" (C:\Users\Sorel\g3d\data10\research/scene/transparencyTest.Scene.Any)
   "G3D Triangle" (C:\Users\Sorel\g3d\data10\research/scene/triangle.Scene.Any)
-ÍýýýýÝÝÝ¯¹è
-ÍýýýýÝÝÝƒ¹wè
+ÍýýýýÝÝÝH‘µ¤
+ÍýýýýÝÝÝø‘å¤
 Íýýýý
 Íýýýý
 Íýýýý
@@ -608,12 +608,11 @@ Vertex info
 Íýýýý
 Íýýýý
 Íýýýý
-Íýýýýle(ˆzíé))
-Íýýýý1, œzñé,,
-Íýýýý;
-MDz™é 6
-Íýýýý0.0ìzÁé3 
-Íýýýý2D;ziè.J
+Íýýýý
+Íýýýý
+Íýýýý
+Íýýýý
+Íýýýý
 _____________________________________________________
 
     ###    Files Used    ###
