@@ -23,6 +23,9 @@
     <None Include="data-files\whiteCube.Scene.Any">
       <Filter>Scene Files</Filter>
     </None>
+    <None Include="data-files\whiteCrate.Scene.Any">
+      <Filter>Scene Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
