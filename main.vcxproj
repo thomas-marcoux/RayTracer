@@ -89,21 +89,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\App.h" />
+    <ClInclude Include="source\Point3D.h" />
+    <ClInclude Include="source\TriangeList.h" />
+    <ClInclude Include="source\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\App.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resources.rc" />
+    <ClCompile Include="source\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data-files\cornellBox.Scene.Any" />
     <None Include="data-files\test.Scene.Any" />
     <None Include="data-files\whiteCrate.Scene.Any" />
     <None Include="data-files\whiteCube.Scene.Any" />
-    <None Include="Doxyfile" />
-    <None Include="journal\journal.md.html" />
-    <None Include="mainpage.dox" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

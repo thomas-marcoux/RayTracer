@@ -4,22 +4,28 @@
     <ClCompile Include="source\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\Triangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\Triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TriangeList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Point3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="mainpage.dox" />
-    <None Include="Doxyfile" />
     <None Include="data-files\test.Scene.Any">
       <Filter>Scene Files</Filter>
     </None>
-    <None Include="journal\journal.md.html" />
     <None Include="data-files\whiteCube.Scene.Any">
       <Filter>Scene Files</Filter>
     </None>
