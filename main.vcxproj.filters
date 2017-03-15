@@ -4,7 +4,11 @@
     <ClCompile Include="source\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Triangle.cpp">
+    <ClCompile Include="source\MyTriangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TriangeList.cpp" />
+    <ClCompile Include="source\MakeCylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -12,13 +16,13 @@
     <ClInclude Include="source\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\TriangeList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Point3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MyTriangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

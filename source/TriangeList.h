@@ -3,25 +3,17 @@
 
 #include <G3D/G3DAll.h>
 #include "Point3D.h"
-#include "Triangle.h"
+#include "MyTriangle.h"
 
 class TriangleList
 {
 public:
-		Array<Point3> vertexArray;
+		Array<Point3D>	vertexArray;
+		Array<int>		indexArray;
 
-		MyTriangle triangle(int t) const {
-			return MyTriangle
-			(vertexArray[3 * t],
-				vertexArray[3 * t + 1],
-				vertexArray[3 * t + 2]);
-		}
-
-		int size() const {
-			return vertexArray.size() / 3;
-		}
-	};
-
+public:
+		MyTriangle	triangle(int t) const;
+		int			size() const { return indexArray.size() / 3; }
 };
 
 #endif // !TRIANGLELIST_H

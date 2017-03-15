@@ -1,6 +1,9 @@
 /** \file App.cpp */
 #include "App.h"
 
+void	makeCylinder(float rad, float height);
+
+
 // Tells C++ to invoke command-line main() function even on OS X and Win32.
 G3D_START_AT_MAIN();
 
@@ -56,7 +59,7 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 void App::onInit() {
     GApp::onInit();
     setFrameDuration(1.0f / 60.0f);
-
+	makeCylinder(1.0, 5.0);
     // Call setScene(shared_ptr<Scene>()) or setScene(MyScene::create()) to replace
     // the default scene here.
     
@@ -90,6 +93,7 @@ void App::makeGUI() {
     infoPane->addButton("Exit", [this]() { m_endProgram = true; });
     infoPane->pack();
 
+	G3D::String myName("");
     // More examples of debugging GUI controls:
     // debugPane->addCheckBox("Use explicit checking", &explicitCheck);
     // debugPane->addTextBox("Name", &myName);
