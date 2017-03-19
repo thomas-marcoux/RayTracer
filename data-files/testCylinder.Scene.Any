@@ -1,0 +1,41 @@
+/* -*- c++ -*- */
+{ 
+    name = "Test Cylinder"; 
+
+    entities = { 
+
+        camera = Camera {             
+            frame = CFrame::fromXYZYPRDegrees(  2.7f,   1.5f,   1.9f,  40.0f,  -5.0f,   0.0f); 
+        }; 
+        
+        skybox = Skybox { 
+            texture = "cubemap/noonclouds/noonclouds_*.png"; 
+        };
+
+        object = VisibleEntity {
+            model = "cylinderModel";
+        };
+
+		sun = Light {
+			bulbPower = Power3(2e6,1.7e6,1.4e6);
+			shadowMapBias = 0.01;
+			track = lookAt(Point3(-90, 200, 40), Point3(0, 0, 0));
+			shadowMapSize = Vector2int16(4096, 4096);
+			shadowMapBias = 0.02;
+			spotHalfAngleDegrees = 7;
+			spotSquare = true;
+			type = "SPOT";
+		}; 
+	};
+
+    models = {
+        groundModel = ArticulatedModel::Specification { 
+            filename = "square.ifs"; 
+            scale = 20; 
+        }; 
+
+        cylinderModel = ArticulatedModel::Specification {
+            filename = "model/cylinder.off";
+        };
+    };
+} 

@@ -35,6 +35,10 @@ public:
     virtual bool onEvent(const GEvent& e) override;
     virtual void onUserInput(UserInput* ui) override;
     virtual void onCleanup() override;
+
+private:
+	float	height;
+	float	radius;
 };
 
 #endif // !APP_H

@@ -50,6 +50,8 @@ int main(int argc, const char* argv[]) {
 
 
 App::App(const GApp::Settings& settings) : GApp(settings) {
+	radius = 2.0f;
+	height = 3.0f;
 }
 
 
@@ -59,7 +61,6 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 void App::onInit() {
     GApp::onInit();
     setFrameDuration(1.0f / 60.0f);
-	makeCylinder(1.0, 5.0);
     // Call setScene(shared_ptr<Scene>()) or setScene(MyScene::create()) to replace
     // the default scene here.
     
@@ -72,8 +73,8 @@ void App::onInit() {
 
     loadScene(
         //"G3D Sponza"
-        "G3D Cornell Box" // Load something simple
-        //developerWindow->sceneEditorWindow->selectedSceneName()  // Load the first scene encountered 
+        //"G3D Cornell Box" // Load something simple
+        developerWindow->sceneEditorWindow->selectedSceneName()  // Load the first scene encountered 
         );
 }
 
@@ -85,22 +86,17 @@ void App::makeGUI() {
     debugWindow->setVisible(true);
     developerWindow->videoRecordDialog->setEnabled(true);
 
-    GuiPane* infoPane = debugPane->addPane("Info", GuiTheme::ORNATE_PANE_STYLE);
-    
-    // Example of how to add debugging controls
-    infoPane->addLabel("You can add GUI controls");
-    infoPane->addLabel("in App::onInit().");
-    infoPane->addButton("Exit", [this]() { m_endProgram = true; });
-    infoPane->pack();
+	GuiPane* cylinderPane = debugPane->addPane("Cylinder", GuiTheme::ORNATE_PANE_STYLE);
+	cylinderPane->addNumberBox("height", &height, "", GuiTheme::LOG_SLIDER, 1.0f, 10.0f);
+	cylinderPane->addNumberBox("radius", &radius, "", GuiTheme::LOG_SLIDER, 1.0f, 10.0f);
+	cylinderPane->addButton("Generate cylinder", [this]() { makeCylinder(radius, height); drawMessage("Generating Cylinder."); });
+	cylinderPane->addButton("Exit", [this]() { m_endProgram = true; });
+	cylinderPane->pack();
 
-	G3D::String myName("");
     // More examples of debugging GUI controls:
     // debugPane->addCheckBox("Use explicit checking", &explicitCheck);
     // debugPane->addTextBox("Name", &myName);
-    // debugPane->addNumberBox("height", &height, "m", GuiTheme::LINEAR_SLIDER, 1.0f, 2.5f);
     // button = debugPane->addButton("Run Simulator");
-    // debugPane->addButton("Generate Heightfield", [this](){ generateHeightfield(); });
-    // debugPane->addButton("Generate Heightfield", [this](){ makeHeightfield(imageName, scale, "model/heightfield.off"); });
 
     debugWindow->pack();
     debugWindow->setRect(Rect2D::xywh(0, 0, (float)window()->width(), debugWindow->rect().height()));
