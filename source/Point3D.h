@@ -1,14 +1,19 @@
 #ifndef POINT3D_H
 #define POINT3D_H
 
+#include "Vector3D.h"
+
 class Point3D
 {
 public:
-	float x, y, z;
+	float _x;
+	float _y;
+	float _z;
 
 public:
-	Point3D() : x(0.0f), y(0.0f), z(0.0f) {}
-	Point3D(float cx, float cy, float cz) : x(cz), y(cy), z(cz) {}
+	Point3D() : _x(0.0f), _y(0.0f), _z(0.0f) {}
+	Point3D(float x, float y, float z) : _x(x), _y(y), _z(z) {}
+	Vector3D direction();
 };
 
 #endif // !POINT3D_H

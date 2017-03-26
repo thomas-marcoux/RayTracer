@@ -39,6 +39,11 @@ public:
 private:
 	float	height;
 	float	radius;
+	bool	fixedPrimitives;
+	bool	multithreading;
+	Array<GuiText>	resolutionList;
+	int		resolutionID;
+	int		raysPerPixel;
 };
 
 #endif // !APP_H

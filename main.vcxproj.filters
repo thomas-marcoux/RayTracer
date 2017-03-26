@@ -7,10 +7,19 @@
     <ClCompile Include="source\MyTriangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\TriangeList.cpp" />
     <ClCompile Include="source\MakeCylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\TriangeList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Vector3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PinholeCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Point3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\App.h">
@@ -23,6 +32,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\MyTriangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Vector3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PinholeCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

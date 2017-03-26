@@ -89,15 +89,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\App.h" />
+    <ClInclude Include="source\PinholeCamera.h" />
     <ClInclude Include="source\Point3D.h" />
+    <ClInclude Include="source\Ray.h" />
     <ClInclude Include="source\TriangeList.h" />
     <ClInclude Include="source\MyTriangle.h" />
+    <ClInclude Include="source\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\App.cpp" />
     <ClCompile Include="source\MakeCylinder.cpp" />
     <ClCompile Include="source\MyTriangle.cpp" />
+    <ClCompile Include="source\PinholeCamera.cpp" />
+    <ClCompile Include="source\Point3D.cpp" />
     <ClCompile Include="source\TriangeList.cpp" />
+    <ClCompile Include="source\Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data-files\cornellBox.Scene.Any" />

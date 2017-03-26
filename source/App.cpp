@@ -50,8 +50,15 @@ int main(int argc, const char* argv[]) {
 
 
 App::App(const GApp::Settings& settings) : GApp(settings) {
-	radius = 2.0f;
 	height = 3.0f;
+	radius = 2.0f;
+	fixedPrimitives = false;
+	multithreading = false;
+	resolutionList.append(GuiText("1x1"));
+	resolutionList.append(GuiText("320x200"));
+	resolutionList.append(GuiText("640x400"));
+	resolutionID = 1;
+	raysPerPixel = 0;
 }
 
 
@@ -86,17 +93,29 @@ void App::makeGUI() {
     debugWindow->setVisible(true);
     developerWindow->videoRecordDialog->setEnabled(true);
 
+	GuiPane* rayPane = debugPane->addPane("Rays", GuiTheme::ORNATE_PANE_STYLE);
+	rayPane->setNewChildSize(360);
+	rayPane->addDropDownList("Resolution", resolutionList, &resolutionID);
+	rayPane->addCheckBox("Add fixed primitives", &fixedPrimitives);
+	rayPane->addCheckBox("Multithreading", &multithreading);
+	rayPane->addNumberBox("Indirect rays per pixel", &raysPerPixel, "", GuiTheme::LOG_SLIDER, 0, 2048);
+	rayPane->addButton("Load Scene", [this]() {
+		drawMessage("Loading..."); 
+		loadScene(//"G3D Cornell Box" 
+			developerWindow->sceneEditorWindow->selectedSceneName());
+	});
+	rayPane->addButton("Render", [this]() { drawMessage("Rendering..."); });
+	rayPane->addButton("Exit", [this]() { m_endProgram = true; });
+	rayPane->pack();
+
+	/*
 	GuiPane* cylinderPane = debugPane->addPane("Cylinder", GuiTheme::ORNATE_PANE_STYLE);
 	cylinderPane->addNumberBox("height", &height, "", GuiTheme::LOG_SLIDER, 1.0f, 10.0f);
 	cylinderPane->addNumberBox("radius", &radius, "", GuiTheme::LOG_SLIDER, 1.0f, 10.0f);
 	cylinderPane->addButton("Generate cylinder", [this]() { makeCylinder(radius, height); drawMessage("Generating Cylinder."); });
 	cylinderPane->addButton("Exit", [this]() { m_endProgram = true; });
 	cylinderPane->pack();
-
-    // More examples of debugging GUI controls:
-    // debugPane->addCheckBox("Use explicit checking", &explicitCheck);
-    // debugPane->addTextBox("Name", &myName);
-    // button = debugPane->addButton("Run Simulator");
+	*/
 
     debugWindow->pack();
     debugWindow->setRect(Rect2D::xywh(0, 0, (float)window()->width(), debugWindow->rect().height()));

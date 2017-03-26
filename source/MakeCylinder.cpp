@@ -33,11 +33,11 @@ void	writeIndex(TextOutput& file, int nChords)
 	for (i = 1; i < nChords; ++i)
 		file.printf("%d %d %d %d\n", nVertices, i + 1, i, y);
 	file.printf("%d %d %d %d\n", nVertices, 1, i, y);
-	//Bottom Mesh
+	//Bottom Layer
 	for (i = 1; i < nChords; ++i)
 		file.printf("%d %d %d %d\n", nVertices, i + nChords, i + 1, i);
 	file.printf("%d %d %d %d\n", nVertices, i + nChords, 1, i);
-	//Top Mesh
+	//Top Layer
 	for (i=nChords+1; i < j; ++i)
 		file.printf("%d %d %d %d\n", nVertices, i, i + 1, i + 1 - nChords);
 	file.printf("%d %d %d %d\n", nVertices, i, nChords+1, 1);
