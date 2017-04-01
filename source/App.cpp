@@ -98,14 +98,16 @@ void App::makeGUI() {
 	rayPane->addDropDownList("Resolution", resolutionList, &resolutionID);
 	rayPane->addCheckBox("Add fixed primitives", &fixedPrimitives);
 	rayPane->addCheckBox("Multithreading", &multithreading);
-	rayPane->addNumberBox("Indirect rays per pixel", &raysPerPixel, "", GuiTheme::LOG_SLIDER, 0, 2048);
-	rayPane->addButton("Load Scene", [this]() {
-		drawMessage("Loading..."); 
-		loadScene(//"G3D Cornell Box" 
-			developerWindow->sceneEditorWindow->selectedSceneName());
-	});
-	rayPane->addButton("Render", [this]() { drawMessage("Rendering..."); });
-	rayPane->addButton("Exit", [this]() { m_endProgram = true; });
+	rayPane->addNumberBox("Rays per pixel", &raysPerPixel, "", GuiTheme::LOG_SLIDER, 0, 2048);
+	rayPane->beginRow();
+		rayPane->addButton("Load Scene", [this]() {
+			drawMessage("Loading..."); 
+			loadScene(//"G3D Cornell Box" 
+				developerWindow->sceneEditorWindow->selectedSceneName());
+		});
+		rayPane->addButton("Render", [this]() { drawMessage("Rendering..."); });
+		rayPane->addButton("Exit", [this]() { m_endProgram = true; });
+	rayPane->endRow();
 	rayPane->pack();
 
 	/*
