@@ -92,6 +92,7 @@
     <ClInclude Include="source\PinholeCamera.h" />
     <ClInclude Include="source\Point3D.h" />
     <ClInclude Include="source\Ray.h" />
+    <ClInclude Include="source\RayTracer.h" />
     <ClInclude Include="source\TriangeList.h" />
     <ClInclude Include="source\MyTriangle.h" />
     <ClInclude Include="source\Vector3D.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="source\MyTriangle.cpp" />
     <ClCompile Include="source\PinholeCamera.cpp" />
     <ClCompile Include="source\Point3D.cpp" />
+    <ClCompile Include="source\RayTracer.cpp" />
     <ClCompile Include="source\TriangeList.cpp" />
     <ClCompile Include="source\Vector3D.cpp" />
   </ItemGroup>

@@ -8,6 +8,7 @@
 #define APP_H
 
 #include <G3D/G3DAll.h>
+#include "RayTracer.h"
 
 /** \brief Application framework. */
 class App : public GApp {
@@ -48,10 +49,16 @@ private:
 	int		resolutionID;
 	int		raysPerPixel;
 
-	Stopwatch		sw;
+	//RayTracer
+	std::unique_ptr<RayTracer>	rayTracer;
+	//Output image
 	Vector2int32	resolution;
+	std::shared_ptr<Image>	image;
+	std::shared_ptr<Texture> result;
+	//Time
+	std::unique_ptr<Stopwatch>		sw;
 	RealTime		renderTime;
-	std::shared_ptr<Image>	output;
+	//Surfaces
 	Array<shared_ptr<Surface>>	surfaces;
 	Array<shared_ptr<Surface2D>> surfaces2D;
 };
