@@ -59,6 +59,7 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 	resolutionList.append(GuiText("640x400"));
 	resolutionID = 1;
 	raysPerPixel = 0;
+	sw.enabled();
 }
 
 
@@ -105,7 +106,7 @@ void App::makeGUI() {
 			loadScene(//"G3D Cornell Box" 
 				developerWindow->sceneEditorWindow->selectedSceneName());
 		});
-		rayPane->addButton("Render", [this]() { drawMessage("Rendering..."); });
+		rayPane->addButton("Render", [this]() { drawMessage("Rendering..."); render(); });
 		rayPane->addButton("Exit", [this]() { m_endProgram = true; });
 	rayPane->endRow();
 	rayPane->pack();
@@ -250,4 +251,32 @@ void App::onGraphics2D(RenderDevice* rd, Array<shared_ptr<Surface2D> >& posed2D)
 void App::onCleanup() {
     // Called after the application loop ends.  Place a majority of cleanup code
     // here instead of in the constructor so that exceptions can be caught.
+}
+
+void App::render()
+{
+	//Get resolution
+	resolution = getResolution();
+
+	//Start clock
+	sw.tick();
+	//Set output parameters
+	output->setSize(resolution[0], resolution[1]);
+	//Pose scene
+	onPose(surfaces, surfaces2D);
+
+	//End clock
+	sw.tock();
+	renderTime = sw.elapsedTime();
+}
+
+Vector2int32 App::getResolution() const
+{
+	String s = resolutionList[resolutionID];
+	int	x = 1;
+	int	y = 1;
+
+	sscanf(s.c_str(), "%dx%d", &x, &y);
+	debugPrintf("s = %s, x = %d, y = %d\n", s.c_str(), x, y);
+	return Vector2int32(x, y);
 }

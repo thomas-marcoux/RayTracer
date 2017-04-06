@@ -36,6 +36,9 @@ public:
     virtual void onUserInput(UserInput* ui) override;
     virtual void onCleanup() override;
 
+	void render();
+	Vector2int32 getResolution() const;
+
 private:
 	float	height;
 	float	radius;
@@ -44,6 +47,13 @@ private:
 	Array<GuiText>	resolutionList;
 	int		resolutionID;
 	int		raysPerPixel;
+
+	Stopwatch		sw;
+	Vector2int32	resolution;
+	RealTime		renderTime;
+	std::shared_ptr<Image>	output;
+	Array<shared_ptr<Surface>>	surfaces;
+	Array<shared_ptr<Surface2D>> surfaces2D;
 };
 
 #endif // !APP_H
