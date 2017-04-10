@@ -54,18 +54,18 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 	height = 3.0f;
 	radius = 2.0f;
 	//RayTracer GUI
-	fixedPrimitives = false;
-	multithreading = false;
+	fixedPrimitives = true;
+	multithreading = true;
 	resolutionList.append(GuiText("1x1"));
 	resolutionList.append(GuiText("320x200"));
 	resolutionList.append(GuiText("640x400"));
 	resolutionID = 1;
-	raysPerPixel = 0;
+	raysPerPixel = 1024;
 	//RayTracer variables
+	rayTracer = std::make_unique<RayTracer>();
 	sw = std::make_unique<StopWatch>();
 	sw->enabled();
 	image = nullptr;
-	rayTracer = std::make_unique<RayTracer>();
 	result = nullptr;
 }
 
@@ -263,33 +263,31 @@ void App::onCleanup() {
 //Setup rendering parameters
 void App::render()
 {
-	std::shared_ptr<G3D::Image3> image3;
-	std::shared_ptr<G3D::Scene> scene;
 	std::shared_ptr<Texture> texture;
-	std::shared_ptr<Film> film = G3D::GApp::m_film;
 
-	//Get resolution
 	resolution = getResolution();
-	//Create temporary empty image
-	image3 = G3D::Image3::createEmpty(resolution[0], resolution[1]);
 	//Set output image parameters
-	image = G3D::Image::create(resolution[0], resolution[1], image3->format());
-	//Pose scene
+	image = G3D::Image::create(resolution[0], resolution[1], ImageFormat::RGB32F());
+	//Pose scene and load surfaces
 	G3D::GApp::onPose(surfaces, surfaces2D);
-	//Set scene
-	scene = G3D::GApp::scene();
-	//Start clock
+	//Load Raytracer
+	rayTracer->useMultiThreading(multithreading);
+	rayTracer->useFixedPrimitives(fixedPrimitives);
+	rayTracer->loadSurfaces(surfaces);
+	rayTracer->loadLights(G3D::GApp::scene());
+	rayTracer->loadCamera(G3D::GApp::activeCamera());
+	rayTracer->setRayPerPixel(raysPerPixel);
+	//Raytrace and mesure elapsed time
 	sw->tick();
-	//Raytrace
-	rayTracer->rayTrace(image.get(), scene.get(), G3D::GApp::activeCamera().get());
-	//End clock
+	rayTracer->rayTrace(image);
 	sw->tock();
 	renderTime = sw->elapsedTime();
 	debugPrintf("Render time = %d\n", renderTime);
 	//Post-process
 	texture = G3D::Texture::fromImage("RayTraced Image", image);
-	m_film->exposeAndRender(renderDevice, m_debugCamera->filmSettings(), texture, settings().hdrFramebuffer.colorGuardBandThickness.x,
+	G3D::GApp::m_film->exposeAndRender(renderDevice, m_debugCamera->filmSettings(), texture, settings().hdrFramebuffer.colorGuardBandThickness.x,
 		settings().hdrFramebuffer.depthGuardBandThickness.x, result);
+	//result->toImage()->save("result.png");
 }
 
 Vector2int32 App::getResolution() const

@@ -41,14 +41,16 @@ public:
 	Vector2int32 getResolution() const;
 
 private:
+	//Cylinder options
 	float	height;
 	float	radius;
-	bool	fixedPrimitives;
-	bool	multithreading;
+	//Resolution
 	Array<GuiText>	resolutionList;
 	int		resolutionID;
+	//RayTracer options
+	bool	fixedPrimitives;
+	bool	multithreading;
 	int		raysPerPixel;
-
 	//RayTracer
 	std::unique_ptr<RayTracer>	rayTracer;
 	//Output image
