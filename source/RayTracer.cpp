@@ -8,6 +8,7 @@ RayTracer::RayTracer()
 	m_rays_per_pixel = 0;
 	m_pinhole_camera = std::make_unique<PinholeCamera>(-3.0f, 0.785398f); //45° FOV
 	m_sphere1 = Sphere(Point3(0, 0, -5), 1);
+	m_sphere2 = Sphere(Point3(3, 0, -5), 1);
 	m_epsilon = 0.05f;
 }
 
@@ -16,6 +17,7 @@ RayTracer::~RayTracer()
 
 }
 
+//Return distance to intersection with plane
 float RayTracer::intersectRayPlane(Point3 const& C, Vector3 const& n, Point3 const& P, Vector3 const& w)
 {
 	float d = n.dot(w);
@@ -41,16 +43,64 @@ float RayTracer::intersectRaySphere(Sphere const& s, Point3 const& P, Vector3 co
 	return INFINITY; //Ray began past sphere
 }
 
+//Return distance to triangle V and store barycentric coordinates to b
+float RayTracer::intersectRayTriangle(Point3 const V[3], float b[3], Point3 const& P, Vector3 const& w)
+{
+	Vector3 e1 = V[1] - V[0];
+	Vector3 e2 = V[2] - V[0];
+	//Normal vector
+	Vector3 n = e1.cross(e2).direction();
+	Vector3 q = w.cross(e2);
+	float a = e1.dot(q);
+	//faces back of triangle or almost parallel
+	if (n.dot(w) >= 0 || abs(a) <= m_epsilon)
+		return INFINITY;
+	Vector3 s = (P - V[0]) / a;
+	Vector3 r = s.cross(e1);
+	b[0] = s.dot(q);
+	b[1] = r.dot(w);
+	b[2] = 1.0f - b[0] - b[1];
+	//Intersection outside triangle
+	if (b[0] < 0 || b[1] < 0 || b[2] < 0)
+		return INFINITY;
+	float t = e2.dot(r);
+	return (t >= 0) ? t : INFINITY;
+}
+
 //Compute outgoing radiance
 Radiance3 RayTracer::getL_i(Point3 const& P, Vector3 const& w)
 {
 	//const shared_ptr<Surfel>& s = findFirstIntersection(P, w);
+	float s1 = intersectRaySphere(m_sphere1, P, w);
+	float s2 = intersectRaySphere(m_sphere2, P, w);
+	float s = (s1 < s2) ? s1 : s2;
+	/*
 	float p = intersectRayPlane(Point3(0, 0, -5), Vector3(0, 0, 1), P, w);
-	float s = intersectRaySphere(m_sphere1, P, w);
+	Point3 V[3] = { Point3(-5,0,0), Point3(0,-5,0), Point3(0,0,-5) };
+	float b[3];
+	float r = intersectRayTriangle(V, b, P, w);
+	*/
 
-	if (s != INFINITY) //if (p != INFINITY)
+	if (s != INFINITY)
 		return Radiance3::one();
 	return Radiance3::zero();
+}
+
+shared_ptr<Surfel>	RayTracer::findFirstIntersection(Ray const& r)
+{
+	return m_surfaces->intersectRay(r);
+}
+
+Radiance3 RayTracer::getL_i(Ray const& r)
+{
+	shared_ptr<Surfel> s = findFirstIntersection(r);
+	Radiance3 L_0 = Radiance3::zero();
+
+	if (s)
+	{
+		return Radiance3(s->shadingNormal) * 0.5f * Radiance3(0.5f);
+	}
+	return L_0;
 }
 
 void RayTracer::trace(Point2int32 const& pixel)
@@ -65,8 +115,11 @@ void RayTracer::trace(Point2int32 const& pixel)
 	}
 	else
 	{
+		Radiance3 L_i = Radiance3::zero();
 		Ray r = m_camera->worldRay(pixel.x + 0.5f, pixel.y + 0.5f, m_image->bounds());
-		Radiance3 radiance;
+		for (int i = 0; i < m_rays_per_pixel; ++i)
+			L_i += getL_i(r);
+		m_image->set(pixel.x, pixel.y, L_i / (float)m_rays_per_pixel);
 	}
 }
 

@@ -20,9 +20,12 @@ public:
 
 private:
 	void trace(Point2int32 const&);
+	Radiance3 getL_i(Ray const&);
 	Radiance3 getL_i(Point3 const&, Vector3 const&);
 	float intersectRaySphere(Sphere const& s, Point3 const& P, Vector3 const& w);
 	float intersectRayPlane(Point3 const& C, Vector3 const& n, Point3 const& P, Vector3 const& w);
+	float RayTracer::intersectRayTriangle(Point3 const V[3], float b[3], Point3 const& P, Vector3 const& w);
+	shared_ptr<Surfel>	findFirstIntersection(Ray const&);
 
 private:
 	std::unique_ptr<TriTree>	m_surfaces;
@@ -36,6 +39,8 @@ private:
 	std::unique_ptr<PinholeCamera>	m_pinhole_camera;
 	float						m_epsilon;
 	Sphere						m_sphere1;
+	Sphere						m_sphere2;
+
 };
 
 #endif // !RAYTRACER_H

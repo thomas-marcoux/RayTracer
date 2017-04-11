@@ -105,7 +105,7 @@ void App::makeGUI() {
 	GuiPane* rayPane = debugPane->addPane("Rays", GuiTheme::ORNATE_PANE_STYLE);
 	rayPane->setNewChildSize(360);
 	rayPane->addDropDownList("Resolution", resolutionList, &resolutionID);
-	rayPane->addCheckBox("Add fixed primitives", &fixedPrimitives);
+	rayPane->addCheckBox("Use fixed primitives", &fixedPrimitives);
 	rayPane->addCheckBox("Multithreading", &multithreading);
 	rayPane->addNumberBox("Rays per pixel", &raysPerPixel, "", GuiTheme::LOG_SLIDER, 0, 2048);
 	rayPane->addNumberBox("z_near", &z_near, "", GuiTheme::LOG_SLIDER, -10, 10);
