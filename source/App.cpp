@@ -61,6 +61,7 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 	resolutionList.append(GuiText("640x400"));
 	resolutionID = 1;
 	raysPerPixel = 1024;
+	z_near = -3;
 	//RayTracer variables
 	rayTracer = std::make_unique<RayTracer>();
 	sw = std::make_unique<StopWatch>();
@@ -107,6 +108,7 @@ void App::makeGUI() {
 	rayPane->addCheckBox("Add fixed primitives", &fixedPrimitives);
 	rayPane->addCheckBox("Multithreading", &multithreading);
 	rayPane->addNumberBox("Rays per pixel", &raysPerPixel, "", GuiTheme::LOG_SLIDER, 0, 2048);
+	rayPane->addNumberBox("z_near", &z_near, "", GuiTheme::LOG_SLIDER, -10, 10);
 	rayPane->beginRow();
 		rayPane->addButton("Load Scene", [this]() {
 			drawMessage("Loading..."); 
@@ -267,7 +269,7 @@ void App::render()
 
 	resolution = getResolution();
 	//Set output image parameters
-	image = G3D::Image::create(resolution[0], resolution[1], ImageFormat::RGB32F());
+	image = G3D::Image::create(resolution[0], resolution[1], ImageFormat::RGB8());
 	//Pose scene and load surfaces
 	G3D::GApp::onPose(surfaces, surfaces2D);
 	//Load Raytracer
@@ -276,6 +278,7 @@ void App::render()
 	rayTracer->loadSurfaces(surfaces);
 	rayTracer->loadLights(G3D::GApp::scene());
 	rayTracer->loadCamera(G3D::GApp::activeCamera());
+	rayTracer->setZNear(z_near);
 	rayTracer->setRayPerPixel(raysPerPixel);
 	//Raytrace and mesure elapsed time
 	sw->tick();
@@ -283,11 +286,13 @@ void App::render()
 	sw->tock();
 	renderTime = sw->elapsedTime();
 	debugPrintf("Render time = %d\n", renderTime);
+	G3D::GApp::show(image);
 	//Post-process
+	//image->save("../raw_result.png");
 	texture = G3D::Texture::fromImage("RayTraced Image", image);
 	G3D::GApp::m_film->exposeAndRender(renderDevice, m_debugCamera->filmSettings(), texture, settings().hdrFramebuffer.colorGuardBandThickness.x,
 		settings().hdrFramebuffer.depthGuardBandThickness.x, result);
-	//result->toImage()->save("result.png");
+	result->toImage()->save("../result.png");
 }
 
 Vector2int32 App::getResolution() const

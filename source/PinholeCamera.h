@@ -1,8 +1,7 @@
 #ifndef PINHOLECAMERA_H
 #define PINHOLECAMERA_H
 
-#include "Point3D.h";
-#include "Vector3D.h"
+#include <G3D/G3DAll.h>
 
 class PinholeCamera
 {
@@ -11,7 +10,9 @@ protected:
 	float verticalFieldOfView; //theta_y
 
 public:
-	void getPrimaryRay(float x, float y, int width, int height, Point3D& P, Vector3D& w) const;
+	PinholeCamera(float, float);
+	void getPrimaryRay(float x, float y, int width, int height, Point3& P, Vector3& w) const;
+	void setZNear(float z) { z_near = z; }
 };
 
 #endif // !PINHOLECAMERA_H

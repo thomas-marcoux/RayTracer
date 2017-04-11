@@ -51,6 +51,7 @@ private:
 	bool	fixedPrimitives;
 	bool	multithreading;
 	int		raysPerPixel;
+	int		z_near;
 	//RayTracer
 	std::unique_ptr<RayTracer>	rayTracer;
 	//Output image
