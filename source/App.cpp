@@ -54,11 +54,13 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 	height = 3.0f;
 	radius = 2.0f;
 	//RayTracer GUI
-	fixedPrimitives = true;
+	fixedPrimitives = false;
 	multithreading = true;
 	resolutionList.append(GuiText("1x1"));
 	resolutionList.append(GuiText("320x200"));
 	resolutionList.append(GuiText("640x400"));
+	resolutionList.append(GuiText("1024x600"));
+	resolutionList.append(GuiText("1440x900"));
 	resolutionID = 1;
 	raysPerPixel = 1024;
 	z_near = -3;

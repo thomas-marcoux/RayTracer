@@ -91,16 +91,38 @@ shared_ptr<Surfel>	RayTracer::findFirstIntersection(Ray const& r)
 	return m_surfaces->intersectRay(r);
 }
 
+Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
+{
+	Radiance3 L_o = s->emittedRadiance(wo);
+	Point3 P = s->position;
+	Vector3 v = s->shadingNormal;
+
+	//Sum illumination from all lights
+	for (shared_ptr<Light> const& light : m_lights)
+	{
+		Point3 L_pos = light->position().xyz();
+		if (true)
+		{
+			Vector3 wi = (L_pos - P).direction();
+			Biradiance3 B = light->biradiance(P);
+			Color3 f = s->finiteScatteringDensity(wi, wo);
+			L_o += B * f * abs(wi.dot(v));
+		}
+	}
+	return L_o;
+}
+
 Radiance3 RayTracer::getL_i(Ray const& r)
 {
 	shared_ptr<Surfel> s = findFirstIntersection(r);
-	Radiance3 L_0 = Radiance3::zero();
+	Radiance3 L_o = Radiance3::zero();
 
 	if (s)
 	{
-		return Radiance3(s->shadingNormal) * 0.5f * Radiance3(0.5f);
+		return getL_o(s, -r.direction());
+		//return Radiance3(s->shadingNormal) * 0.5f * Radiance3(0.5f);
 	}
-	return L_0;
+	return L_o;
 }
 
 void RayTracer::trace(Point2int32 const& pixel)
