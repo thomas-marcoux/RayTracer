@@ -62,7 +62,7 @@ App::App(const GApp::Settings& settings) : GApp(settings) {
 	resolutionList.append(GuiText("1024x600"));
 	resolutionList.append(GuiText("1440x900"));
 	resolutionID = 1;
-	raysPerPixel = 1024;
+	raysPerPixel = 512;
 	z_near = -3;
 	//RayTracer variables
 	rayTracer = std::make_unique<RayTracer>();
@@ -290,7 +290,6 @@ void App::render()
 	debugPrintf("Render time = %d\n", renderTime);
 	G3D::GApp::show(image);
 	//Post-process
-	//image->save("../raw_result.png");
 	texture = G3D::Texture::fromImage("RayTraced Image", image);
 	G3D::GApp::m_film->exposeAndRender(renderDevice, m_debugCamera->filmSettings(), texture, settings().hdrFramebuffer.colorGuardBandThickness.x,
 		settings().hdrFramebuffer.depthGuardBandThickness.x, result);

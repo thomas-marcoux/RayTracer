@@ -9,7 +9,8 @@ RayTracer::RayTracer()
 	m_pinhole_camera = std::make_unique<PinholeCamera>(-3.0f, 0.785398f); //45° FOV
 	m_sphere1 = Sphere(Point3(0, 0, -5), 1);
 	m_sphere2 = Sphere(Point3(3, 0, -5), 1);
-	m_epsilon = 0.05f;
+	m_epsilon = 0.0001f;
+	m_bump = 0.001f;
 }
 
 RayTracer::~RayTracer()
@@ -91,6 +92,14 @@ shared_ptr<Surfel>	RayTracer::findFirstIntersection(Ray const& r)
 	return m_surfaces->intersectRay(r);
 }
 
+bool RayTracer::isUnobstructed(Point3 const& P1, Point3 const& P2)
+{
+	Vector3 dist = P2 - P1;
+	Ray ray = Ray::fromOriginAndDirection(P1, dist / dist.length(), 0.0f, dist.length() - 0.001f);
+	TriTree::Hit ignore;
+	return m_surfaces->intersectRay(ray, ignore, TriTree::OCCLUSION_TEST_ONLY | TriTree::DO_NOT_CULL_BACKFACES);
+}
+
 Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
 {
 	Radiance3 L_o = s->emittedRadiance(wo);
@@ -101,9 +110,16 @@ Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
 	for (shared_ptr<Light> const& light : m_lights)
 	{
 		Point3 L_pos = light->position().xyz();
-		if (true)
+		if (light->producesDirectIllumination())
 		{
-			Vector3 wi = (L_pos - P).direction();
+			Vector3 wi;
+			if (!isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
+			{
+				wi = (L_pos - (P + s->geometricNormal * m_epsilon)).direction();
+				wi /= wi.length();
+			}
+			else
+				wi = (L_pos - P).direction();
 			Biradiance3 B = light->biradiance(P);
 			Color3 f = s->finiteScatteringDensity(wi, wo);
 			L_o += B * f * abs(wi.dot(v));

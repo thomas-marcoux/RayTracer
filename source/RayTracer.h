@@ -27,6 +27,7 @@ private:
 	float intersectRayPlane(Point3 const& C, Vector3 const& n, Point3 const& P, Vector3 const& w);
 	float RayTracer::intersectRayTriangle(Point3 const V[3], float b[3], Point3 const& P, Vector3 const& w);
 	shared_ptr<Surfel>	findFirstIntersection(Ray const&);
+	bool isUnobstructed(Point3 const&, Point3 const&);
 
 private:
 	std::unique_ptr<TriTree>	m_surfaces;
@@ -36,12 +37,12 @@ private:
 	bool						m_multithreading;
 	bool						m_fixed_primitives;
 	int							m_rays_per_pixel;
+	float						m_bump;
 	//Fixed primitives attributes
 	std::unique_ptr<PinholeCamera>	m_pinhole_camera;
 	float						m_epsilon;
 	Sphere						m_sphere1;
 	Sphere						m_sphere2;
-
 };
 
 #endif // !RAYTRACER_H
