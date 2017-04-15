@@ -97,7 +97,7 @@ bool RayTracer::isUnobstructed(Point3 const& P1, Point3 const& P2)
 	Vector3 dist = P2 - P1;
 	Ray ray = Ray::fromOriginAndDirection(P1, dist / dist.length(), 0.0f, dist.length() - 0.001f);
 	TriTree::Hit ignore;
-	return m_surfaces->intersectRay(ray, ignore, TriTree::OCCLUSION_TEST_ONLY | TriTree::DO_NOT_CULL_BACKFACES);
+	return ! m_surfaces->intersectRay(ray, ignore, TriTree::OCCLUSION_TEST_ONLY | TriTree::DO_NOT_CULL_BACKFACES);
 }
 
 Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
@@ -113,7 +113,8 @@ Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
 		if (light->producesDirectIllumination())
 		{
 			Vector3 wi;
-			if (isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
+			//shadows
+			if (!isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
 			{
 				/*
 				wi = (L_pos - (P + s->geometricNormal * m_epsilon)).direction();
