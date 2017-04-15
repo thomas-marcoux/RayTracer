@@ -113,10 +113,13 @@ Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
 		if (light->producesDirectIllumination())
 		{
 			Vector3 wi;
-			if (!isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
+			if (isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
 			{
+				/*
 				wi = (L_pos - (P + s->geometricNormal * m_epsilon)).direction();
 				wi /= wi.length();
+				*/
+				return L_o;
 			}
 			else
 				wi = (L_pos - P).direction();
