@@ -100,7 +100,7 @@ bool RayTracer::isUnobstructed(Point3 const& P1, Point3 const& P2)
 	return ! m_surfaces->intersectRay(ray, ignore, TriTree::OCCLUSION_TEST_ONLY | TriTree::DO_NOT_CULL_BACKFACES);
 }
 
-Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
+Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo, Random& rng)
 {
 	Radiance3 L_o = s->emittedRadiance(wo);
 	Point3 P = s->position;
@@ -110,42 +110,30 @@ Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo)
 	for (shared_ptr<Light> const& light : m_lights)
 	{
 		Point3 L_pos = light->position().xyz();
-		if (light->producesDirectIllumination())
+		if (light->producesDirectIllumination() && isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
 		{
 			Vector3 wi;
-			//shadows
-			if (!isUnobstructed(L_pos, s->position + s->geometricNormal * m_bump))
-			{
-				/*
-				wi = (L_pos - (P + s->geometricNormal * m_epsilon)).direction();
-				wi /= wi.length();
-				*/
-				return L_o;
-			}
-			else
-				wi = (L_pos - P).direction();
+			wi = (L_pos - P).direction();
 			Biradiance3 B = light->biradiance(P);
 			Color3 f = s->finiteScatteringDensity(wi, wo);
 			L_o += B * f * abs(wi.dot(v));
 		}
 	}
+	L_o += s->reflectivity(rng) * (Radiance3::fromARGB(0x305050) * 0.3f); //RGB format: (xFF0000) is red
 	return L_o;
 }
 
-Radiance3 RayTracer::getL_i(Ray const& r)
+Radiance3 RayTracer::getL_i(Ray const& r, Random& rng)
 {
 	shared_ptr<Surfel> s = findFirstIntersection(r);
-	Radiance3 L_o = Radiance3::zero();
+	Radiance3 L_o = Radiance3(r.direction()) / 2 + Color3(0.5f);
 
 	if (s)
-	{
-		return getL_o(s, -r.direction());
-		//return Radiance3(s->shadingNormal) * 0.5f * Radiance3(0.5f);
-	}
+		L_o = getL_o(s, -r.direction(), rng);
 	return L_o;
 }
 
-void RayTracer::trace(Point2int32 const& pixel)
+void RayTracer::trace(Point2int32 const& pixel, Random& rng)
 {
 	if (m_fixed_primitives)
 	{
@@ -160,7 +148,7 @@ void RayTracer::trace(Point2int32 const& pixel)
 		Radiance3 L_i = Radiance3::zero();
 		Ray r = m_camera->worldRay(pixel.x + 0.5f, pixel.y + 0.5f, m_image->bounds());
 		for (int i = 0; i < m_rays_per_pixel; ++i)
-			L_i += getL_i(r);
+			L_i += getL_i(r, rng);
 		m_image->set(pixel.x, pixel.y, L_i / (float)m_rays_per_pixel);
 	}
 }
@@ -175,12 +163,12 @@ bool RayTracer::rayTrace(std::shared_ptr<Image>& image)
 
 
 	if (m_multithreading)
-		G3D::Thread::runConcurrently(start, end, [this](Point2int32 pixel) { trace(pixel); });
+		G3D::Thread::runConcurrently(start, end, [this](Point2int32 pixel) { trace(pixel, Random::threadCommon()); });
 	else
 	{
 		for (Point2int32 pixel; pixel.y < image->height(); ++pixel.y)
 			for (pixel.x = 0; pixel.x < image->width(); ++pixel.x)
-				trace(pixel);
+				trace(pixel, Random::threadCommon());
 	}
 	return true;
 }

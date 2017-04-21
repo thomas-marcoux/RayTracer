@@ -293,7 +293,8 @@ void App::render()
 	texture = G3D::Texture::fromImage("RayTraced Image", image);
 	G3D::GApp::m_film->exposeAndRender(renderDevice, m_debugCamera->filmSettings(), texture, settings().hdrFramebuffer.colorGuardBandThickness.x,
 		settings().hdrFramebuffer.depthGuardBandThickness.x, result);
-	result->toImage()->save("../result.png");
+	texture->toImage()->save("../result.png");
+	result->toImage()->save("../postprocess.png");
 }
 
 Vector2int32 App::getResolution() const
