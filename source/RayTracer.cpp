@@ -69,7 +69,7 @@ float RayTracer::intersectRayTriangle(Point3 const V[3], float b[3], Point3 cons
 }
 
 //Compute outgoing radiance
-Radiance3 RayTracer::getL_i(Point3 const& P, Vector3 const& w)
+Radiance3 RayTracer::getL_o(Point3 const& P, Vector3 const& w)
 {
 	//const shared_ptr<Surfel>& s = findFirstIntersection(P, w);
 	float s1 = intersectRaySphere(m_sphere1, P, w);
@@ -100,9 +100,9 @@ bool RayTracer::isUnobstructed(Point3 const& P1, Point3 const& P2)
 	return ! m_surfaces->intersectRay(ray, ignore, TriTree::OCCLUSION_TEST_ONLY | TriTree::DO_NOT_CULL_BACKFACES);
 }
 
-Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo, Random& rng)
+Radiance3 RayTracer::getL_i(shared_ptr<Surfel> const& s, Vector3 const& wo, Random& rng)
 {
-	Radiance3 L_o = s->emittedRadiance(wo);
+	Radiance3 L_i = s->emittedRadiance(wo);
 	Point3 P = s->position;
 	Vector3 v = s->shadingNormal;
 
@@ -116,22 +116,13 @@ Radiance3 RayTracer::getL_o(shared_ptr<Surfel> const& s, Vector3 const& wo, Rand
 			wi = (L_pos - P).direction();
 			Biradiance3 B = light->biradiance(P);
 			Color3 f = s->finiteScatteringDensity(wi, wo);
-			L_o += B * f * abs(wi.dot(v));
+			L_i += B * f * abs(wi.dot(v));
 		}
 	}
-	L_o += s->reflectivity(rng) * (Radiance3::fromARGB(0x305050) * 0.3f); //RGB format: (xFF0000) is red
-	return L_o;
+	L_i += s->reflectivity(rng) * (Radiance3::fromARGB(0x305050) * 0.3f); //RGB format: (xFF0000) is red
+	return L_i;
 }
 
-Radiance3 RayTracer::getL_i(Ray const& r, Random& rng)
-{
-	shared_ptr<Surfel> s = findFirstIntersection(r);
-	Radiance3 L_o = Radiance3(r.direction()) / 2 + Color3(0.5f);
-
-	if (s)
-		L_o = getL_o(s, -r.direction(), rng);
-	return L_o;
-}
 
 void RayTracer::trace(Point2int32 const& pixel, Random& rng)
 {
@@ -141,15 +132,21 @@ void RayTracer::trace(Point2int32 const& pixel, Random& rng)
 		Vector3	w;
 
 		m_pinhole_camera->getPrimaryRay(pixel.x + 0.5f, pixel.y + 0.5f, m_image->width(), m_image->height(), P, w);
-		m_image->set(pixel.x, pixel.y, getL_i(P, w));
+		m_image->set(pixel.x, pixel.y, getL_o(P, w));
 	}
 	else
 	{
-		Radiance3 L_i = Radiance3::zero();
+		Radiance3 L_o = Radiance3::zero();
 		Ray r = m_camera->worldRay(pixel.x + 0.5f, pixel.y + 0.5f, m_image->bounds());
+		shared_ptr<Surfel> s = findFirstIntersection(r);
 		for (int i = 0; i < m_rays_per_pixel; ++i)
-			L_i += getL_i(r, rng);
-		m_image->set(pixel.x, pixel.y, L_i / (float)m_rays_per_pixel);
+		{
+			Radiance3 L_i = Radiance3(r.direction()) / 2 + Color3(0.5f);
+			if (s)
+				L_i = getL_i(s, -r.direction(), rng);
+			L_o += L_i;
+		}
+		m_image->set(pixel.x, pixel.y, L_o / (float)m_rays_per_pixel);
 	}
 }
 
