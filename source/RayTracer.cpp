@@ -115,8 +115,8 @@ Radiance3 RayTracer::getL_i(shared_ptr<Surfel> const& s, Vector3 const& wo, Rand
 			Vector3 wi;
 			wi = (L_pos - P).direction();
 			Biradiance3 B = light->biradiance(P);
-			Color3 f = s->finiteScatteringDensity(wi, wo);
-			L_i += B * f * abs(wi.dot(v));
+			Color3 c = s->finiteScatteringDensity(wi, wo);
+			L_i += B * c * abs(wi.dot(v));
 		}
 	}
 	L_i += s->reflectivity(rng) * (Radiance3::fromARGB(0x305050) * 0.3f); //RGB format: (xFF0000) is red
